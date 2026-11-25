@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>News Feed</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#f3f4f6;margin:0;padding:20px}
+  h1{text-align:center}
+  #feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:1100px;margin:auto}
+  .news{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.15)}
+  .news img{width:100%;height:170px;object-fit:cover}
+  .body{padding:12px} .meta{font-size:12px;color:#666}
+  a{color:#2563eb;text-decoration:none}
+</style>
+</head>
+<body>
+<h1>Latest News</h1>
+<p style="text-align:center"><button onclick="loadNews()">Refresh</button></p>
+<div id="feed"></div>
+<script>
+// Spaceflight News API: free, no key required
+async function loadNews() {
+  const feed = document.getElementById("feed");
+  feed.innerHTML = "<p>Loading...</p>";
+  try {
+    const res = await fetch("https://api.spaceflightnewsapi.net/v4/articles/?limit=12");
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    feed.innerHTML = data.results.map(a => `
+      <div class="news">
+        <img src="${a.image_url}" alt="">
+        <div class="body">
+          <h3><a href="${a.url}" target="_blank">${a.title}</a></h3>
+          <p>${a.summary}</p>
+          <p class="meta">Source: ${a.news_site} | ${new Date(a.published_at).toLocaleDateString()}</p>
+        </div>
+      </div>`).join("");
+  } catch (e) {
+    feed.innerHTML = "<p>Failed to load news.</p>";
+  }
+}
+loadNews();
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clock and Calendar</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#111827;color:#fff;text-align:center;padding:30px}
+  #time{font-size:56px;font-family:monospace;letter-spacing:3px}
+  #date{font-size:20px;margin-bottom:24px;color:#93c5fd}
+  .cal{background:#1f2937;display:inline-block;padding:16px;border-radius:10px}
+  .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .head button{background:#374151;color:#fff;border:0;padding:6px 12px;cursor:pointer;border-radius:4px}
+  table{border-collapse:collapse} th,td{width:44px;height:38px}
+  td.today{background:#2563eb;border-radius:50%;font-weight:bold}
+  th{color:#fbbf24}
+</style>
+</head>
+<body>
+<div id="time"></div>
+<div id="date"></div>
+<div class="cal">
+  <div class="head"><button onclick="changeMonth(-1)">&lt;</button><b id="monthTitle"></b>
+  <button onclick="changeMonth(1)">&gt;</button></div>
+  <table id="calendar"></table>
+</div>
+<script>
+const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById("time").textContent = now.toLocaleTimeString();
+  document.getElementById("date").textContent =
+    `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+}
+setInterval(updateClock, 1000);     // update every second
+updateClock();
+
+let view = new Date();
+view.setDate(1);
+
+function drawCalendar() {
+  const y = view.getFullYear(), m = view.getMonth();
+  document.getElementById("monthTitle").textContent = `${months[m]} ${y}`;
+  const firstDay = new Date(y, m, 1).getDay();
+  const total = new Date(y, m + 1, 0).getDate();
+  const today = new Date();
+  let html = "<tr>" + days.map(d => `<th>${d.slice(0, 3)}</th>`).join("") + "</tr><tr>";
+  for (let i = 0; i < firstDay; i++) html += "<td></td>";
+  for (let d = 1; d <= total; d++) {
+    const isToday = d === today.getDate() && m === today.getMonth() && y === today.getFullYear();
+    html += `<td class="${isToday ? "today" : ""}">${d}</td>`;
+    if ((firstDay + d) % 7 === 0 && d !== total) html += "</tr><tr>";
+  }
+  document.getElementById("calendar").innerHTML = html + "</tr>";
+}
+function changeMonth(n) { view.setMonth(view.getMonth() + n); drawCalendar(); }
+drawCalendar();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Students</h2>
+<table><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Actions</th></tr>
+{% for r in rows %}
+<tr><td>{{r.id}}</td><td>{{r.name}}</td><td>{{r.email}}</td><td>{{r.course}}</td>
+<td><a class="btn" href="/edit/{{r.id}}">Edit</a>
+<form method="post" action="/delete/{{r.id}}" style="display:inline" onsubmit="return confirm('Delete this record?')">
+<button class="danger">Delete</button></form></td></tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weather Information</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#e0f2fe;display:flex;justify-content:center;padding:40px}
+  .card{background:#fff;padding:24px;border-radius:10px;width:340px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  input{width:65%;padding:8px} button{padding:8px 12px;cursor:pointer}
+  #result p{margin:8px 0} .error{color:#b91c1c}
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Weather Finder</h2>
+  <input id="city" placeholder="Enter city name">
+  <button onclick="getWeather()">Search</button>
+  <div id="result"></div>
+</div>
+<script>
+// Open-Meteo: free API, no key required
+const codes = {0:"Clear sky",1:"Mainly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",48:"Rime fog",
+  51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",61:"Light rain",63:"Rain",65:"Heavy rain",
+  71:"Light snow",73:"Snow",75:"Heavy snow",80:"Rain showers",81:"Rain showers",82:"Violent showers",
+  95:"Thunderstorm",96:"Thunderstorm with hail",99:"Thunderstorm with hail"};
+
+async function getWeather() {
+  const city = document.getElementById("city").value.trim();
+  const out = document.getElementById("result");
+  if (!city) { out.innerHTML = '<p class="error">Please enter a city name.</p>'; return; }
+  out.innerHTML = "<p>Loading...</p>";
+  try {
+    const g = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);
+    const gd = await g.json();
+    if (!gd.results) { out.innerHTML = '<p class="error">City not found.</p>'; return; }
+    const {latitude, longitude, name, country} = gd.results[0];
+    const w = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`);
+    if (!w.ok) throw new Error("Weather service unavailable");
+    const c = (await w.json()).current;
+    out.innerHTML = `
+      <h3>${name}, ${country}</h3>
+      <p><b>Temperature:</b> ${c.temperature_2m} °C</p>
+      <p><b>Humidity:</b> ${c.relative_humidity_2m} %</p>
+      <p><b>Condition:</b> ${codes[c.weather_code] || "Unknown"}</p>
+      <p><b>Wind:</b> ${c.wind_speed_10m} km/h</p>`;
+  } catch (e) {
+    out.innerHTML = '<p class="error">Could not fetch data. Check your connection and try again.</p>';
+  }
+}
+document.getElementById("city").addEventListener("keydown", e => { if (e.key === "Enter") getWeather(); });
+</script>
+</body>
+</html>

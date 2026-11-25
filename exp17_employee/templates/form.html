@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Edit' if rec else 'Add' }} Employee</h2>
+<form method="post">
+  <label>Employee ID</label><input name="emp_id" value="{{ rec.emp_id if rec else '' }}" required>
+  <label>Name</label><input name="name" value="{{ rec.name if rec else '' }}" required>
+  <label>Department</label><input name="department" value="{{ rec.department if rec else '' }}" required>
+  <label>Email</label><input type="email" name="email" value="{{ rec.email if rec else '' }}" required>
+  <label>Salary</label><input name="salary" value="{{ rec.salary if rec else '' }}" required>
+  <button>Save</button>
+</form>
+{% endblock %}

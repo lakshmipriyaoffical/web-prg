@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Edit' if p else 'New' }} Post</h2>
+<form method="post">
+  <label>Title</label><input name="title" value="{{ p.title if p else '' }}" required>
+  <label>Author</label><input name="author" value="{{ p.author if p else '' }}" required>
+  <label>Content</label><textarea name="content" rows="10" required>{{ p.content if p else '' }}</textarea>
+  <button>Save</button>
+</form>
+{% endblock %}

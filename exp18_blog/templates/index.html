@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Blog</h2>
+{% for p in posts %}
+<div style="border-bottom:1px solid #ddd;padding:10px 0">
+  <h3><a href="/post/{{p.id}}">{{p.title}}</a></h3>
+  <small>By {{p.author}} on {{p.created}}</small>
+  <p>{{ p.content[:150] }}{% if p.content|length > 150 %}...{% endif %}</p>
+</div>
+{% else %}<p>No posts yet. <a href="/new">Write the first one.</a></p>
+{% endfor %}
+{% endblock %}

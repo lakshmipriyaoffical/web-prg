@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online Quiz</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:700px;margin:30px auto;padding:0 16px}
+  .q{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px;margin-bottom:14px}
+  .q label{display:block;margin:6px 0;cursor:pointer}
+  button{padding:10px 22px;background:#2563eb;color:#fff;border:0;border-radius:4px;cursor:pointer;font-size:16px}
+  .correct{color:#15803d;font-weight:bold} .wrong{color:#b91c1c;font-weight:bold}
+  #result{margin-top:20px}
+</style>
+</head>
+<body>
+<h2>JavaScript Quiz</h2>
+<form id="quiz"></form>
+<button onclick="submitQuiz()">Submit</button>
+<div id="result"></div>
+<script>
+const questions = [
+  {q:"Which keyword declares a block-scoped variable?", options:["var","let","int","define"], answer:1},
+  {q:"Which method adds an element to the end of an array?", options:["push()","pop()","shift()","unshift()"], answer:0},
+  {q:"What does DOM stand for?", options:["Data Object Model","Document Object Model","Digital Order Mode","Document Oriented Method"], answer:1},
+  {q:"Which symbol is used for strict equality?", options:["=","==","===","=>"], answer:2},
+  {q:"Which function converts JSON text to an object?", options:["JSON.stringify()","JSON.parse()","JSON.object()","JSON.convert()"], answer:1}
+];
+const quiz = document.getElementById("quiz");
+quiz.innerHTML = questions.map((item, i) => `
+  <div class="q"><b>${i + 1}. ${item.q}</b>
+  ${item.options.map((o, j) => `<label><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}
+  </div>`).join("");
+
+function submitQuiz() {
+  let score = 0, summary = "";
+  questions.forEach((item, i) => {
+    const chosen = document.querySelector(`input[name="q${i}"]:checked`);
+    const picked = chosen ? Number(chosen.value) : -1;
+    const ok = picked === item.answer;
+    if (ok) score++;
+    summary += `<p>${i + 1}. <span class="${ok ? "correct" : "wrong"}">${ok ? "Correct" : "Incorrect"}</span>
+      ${ok ? "" : `- Your answer: ${picked === -1 ? "Not answered" : item.options[picked]} | Correct answer: ${item.options[item.answer]}`}</p>`;
+  });
+  document.getElementById("result").innerHTML =
+    `<h3>Final Score: ${score} / ${questions.length}</h3>${summary}`;
+}
+</script>
+</body>
+</html>

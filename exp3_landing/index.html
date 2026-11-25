@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FitTrack - Landing Page</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,sans-serif;color:#222;text-align:center}
+  .intro{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;padding:80px 20px}
+  .intro h1{font-size:42px;margin-bottom:12px}
+  .btn{display:inline-block;margin-top:20px;padding:14px 32px;background:#facc15;color:#111;font-weight:bold;text-decoration:none;border-radius:30px}
+  .features{padding:50px 20px}
+  .features-grid{display:flex;gap:20px;justify-content:center;margin-top:24px}
+  .feature{flex:1;max-width:260px;padding:22px;background:#f3f4f6;border-radius:10px}
+  .cta{background:#111827;color:#fff;padding:50px 20px}
+  @media(max-width:700px){
+    .features-grid{flex-direction:column;align-items:center}
+    .intro h1{font-size:28px}
+    .feature{width:100%;max-width:none}
+  }
+</style>
+</head>
+<body>
+<section class="intro">
+  <h1>FitTrack</h1>
+  <p>Track workouts, meals and sleep in one simple app.</p>
+  <a class="btn" href="#cta">Get Started</a>
+</section>
+<section class="features">
+  <h2>Features</h2>
+  <div class="features-grid">
+    <div class="feature"><h3>Workout Log</h3><p>Record every session easily.</p></div>
+    <div class="feature"><h3>Diet Planner</h3><p>Plan meals and count calories.</p></div>
+    <div class="feature"><h3>Progress Charts</h3><p>See your improvement over time.</p></div>
+  </div>
+</section>
+<section class="cta" id="cta">
+  <h2>Ready to get fit?</h2>
+  <a class="btn" href="#" onclick="alert('Thanks for signing up!');return false;">Sign Up Free</a>
+</section>
+</body>
+</html>

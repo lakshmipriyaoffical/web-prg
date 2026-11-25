@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Employee Management</h2>
+<form method="get" style="display:flex;gap:8px">
+  <input name="q" value="{{ q }}" placeholder="Search by name or ID">
+  <button>Search</button>
+</form>
+<table><tr><th>Emp ID</th><th>Name</th><th>Department</th><th>Email</th><th>Salary</th><th>Actions</th></tr>
+{% for r in rows %}
+<tr><td>{{r.emp_id}}</td><td>{{r.name}}</td><td>{{r.department}}</td><td>{{r.email}}</td><td>{{r.salary}}</td>
+<td><a class="btn" href="/edit/{{r.id}}">Edit</a>
+<form method="post" action="/delete/{{r.id}}" style="display:inline" onsubmit="return confirm('Delete employee?')">
+<button class="danger">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="6">No employees found.</td></tr>
+{% endfor %}
+</table>
+{% endblock %}

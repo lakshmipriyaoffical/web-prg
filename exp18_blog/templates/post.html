@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{p.title}}</h2>
+<small>By {{p.author}} on {{p.created}}</small>
+<p style="white-space:pre-wrap">{{p.content}}</p>
+<a class="btn" href="/edit/{{p.id}}">Edit</a>
+{% endblock %}

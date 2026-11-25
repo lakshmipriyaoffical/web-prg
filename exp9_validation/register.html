@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register</title><style>
+body{font-family:Arial,sans-serif;background:#f3f4f6;display:flex;justify-content:center;padding:40px}
+form{background:#fff;padding:24px;border-radius:10px;width:340px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+input{width:100%;padding:9px;margin-top:4px;box-sizing:border-box}
+.err{color:#dc2626;font-size:13px;min-height:18px;margin-bottom:6px}
+button{width:100%;padding:10px;background:#2563eb;color:#fff;border:0;border-radius:4px;cursor:pointer}
+a{display:block;text-align:center;margin-top:12px}
+</style></head>
+<body>
+<form id="form" novalidate>
+  <h2>Register</h2>
+  <label>Name</label><input id="name"><div class="err" id="nameErr"></div>
+  <label>Email</label><input id="email"><div class="err" id="emailErr"></div>
+  <label>Password</label><input type="password" id="password"><div class="err" id="passwordErr"></div>
+  <label>Confirm Password</label><input type="password" id="confirm"><div class="err" id="confirmErr"></div>
+  <button>Register</button>
+  <a href="login.html">Already have an account? Login</a>
+</form>
+<script src="validate.js"></script>
+<script>
+const f = id => document.getElementById(id);
+f("name").oninput = () => checkName(f("name").value);
+f("email").oninput = () => checkEmail(f("email").value);
+f("password").oninput = () => checkPassword(f("password").value);
+f("confirm").oninput = () => checkConfirm(f("password").value, f("confirm").value);
+f("form").onsubmit = e => {
+  e.preventDefault();
+  const ok = [checkName(f("name").value), checkEmail(f("email").value),
+              checkPassword(f("password").value), checkConfirm(f("password").value, f("confirm").value)]
+             .every(Boolean);
+  if (ok) alert("Registration successful!");
+};
+</script>
+</body></html>
